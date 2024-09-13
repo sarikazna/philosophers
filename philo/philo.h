@@ -6,9 +6,12 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/13 19:07:57 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/13 21:56:09 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef PHILO_H
+#define PHILO_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,10 +24,17 @@
 
 /* DEFINITIONS */
 
+// Colours
+# define RST	"\033[0m"
+# define RED	"\033[1;31m"
+
+// Short version of data type
 typedef	pthread_mutex_t	t_mtx;
-typedef	struct s_sim	t_sim;
 
 /* STRUCTURES */
+
+// Name of struct for the recursive action
+typedef	struct s_sim	t_sim;
 
 typedef struct s_spoon
 {
@@ -55,9 +65,14 @@ struct s_sim
 	bool	end_sim; //a philo dies or all philos full
 	t_spoon	*spoons; // array to spoons
 	t_philo	*philos;
-}			t_sim;
+};
 
+/* FUNCTION PROTOTYPES */
 
+void	error_exit(const char *error);
+void	check_input(int ac, char **av);
+void	parse_input(t_sim *sim, char **av);
+void	sim_init(t_sim *sim);
 
-
+#endif
 
