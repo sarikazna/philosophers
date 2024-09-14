@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/13 21:56:09 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/14 19:34:43 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,25 @@
 					// threads: create join detach
 #include <sys/time.h> // gettimeofday
 #include <limits.h> // INT_MAX, INT_MIN
+#include <errno.h>
 
 /* DEFINITIONS */
 
 // Colours
 # define RST	"\033[0m"
 # define RED	"\033[1;31m"
+
+// Enum
+typedef enum	e_opcode
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH
+}				t_opcode;
 
 // Short version of data type
 typedef	pthread_mutex_t	t_mtx;
@@ -48,8 +61,8 @@ typedef struct s_philo
 	long		meals_count;
 	bool		is_satiated;
 	long		last_meal_time; //time passed from last meal
-	t_spoon		*left_spoon;
-	t_spoon		*right_spoon;
+	t_spoon		*first_spoon;
+	t_spoon		*second_spoon;
 	pthread_t	thread_id; // a philo is a thread
 	t_sim		*sim;
 }				t_philo;
@@ -70,6 +83,10 @@ struct s_sim
 /* FUNCTION PROTOTYPES */
 
 void	error_exit(const char *error);
+void	*safe_malloc(size_t bytes);
+void	safe_thread_handle(pthread_t *thread, void *(foo)(void *), void *data, t_opcode opcode);
+void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
+long	ft_atol(const char *nptr);
 void	check_input(int ac, char **av);
 void	parse_input(t_sim *sim, char **av);
 void	sim_init(t_sim *sim);

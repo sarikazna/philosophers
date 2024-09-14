@@ -1,22 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 20:12:07 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 17:20:58 by srudman          ###   ########.fr       */
+/*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
+/*   Updated: 2024/09/14 19:45:44 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// TO DO, check if anything needs to be freed and add the *sim into the function
-
-/* Writes the error and exits the program. */
-void	error_exit(const char *error)
-{
-	printf(RED"Error: %s\n"RST, error);
-	exit(EXIT_FAILURE);
-}

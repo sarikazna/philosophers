@@ -1,31 +1,82 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simulation_init.c                                  :+:      :+:    :+:   */
+/*   initalize_structs.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/13 21:37:34 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/14 19:39:28 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/* Even and odd spoon assignment */
+static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
+{
+	int	philo_nbr;
+
+	philo_nbr = philo->sim->philo_nbr;
+	philo->second_spoon = &spoons[philo_position];
+	philo->first_spoon = &spoons[(philo_position + 1) % philo_nbr];
+	if (philo->philo_id % 2 == 0) // even philo
+	{
+		philo->first_spoon = &spoons[philo_position];
+		philo->second_spoon = &spoons[(philo_position + 1) % philo_nbr];
+	}
+}
+
+void	philos_init(t_sim *sim)
+{
+	int			i;
+	t_philo	*philo;
+	
+	sim->philos = safe_malloc(sizeof(t_philo) * sim->philo_nbr);
+	i = -1;
+	while (++i < sim->philo_nbr)
+	{
+		philo = sim->philos + i;
+		philo->philo_id = i + 1;
+		philo->meals_count = 0;
+		philo->is_satiated = false;
+		philo->sim = sim;
+		assign_spoons(philo, sim->spoons, i);
+	}
+}
+
+// typedef struct s_philo
+// {
+// 	int			philo_id;
+// 	long		meals_count;
+// 	bool		is_satiated;
+// 	long		last_meal_time; //time passed from last meal
+// 	t_spoon		*left_spoon;
+// 	t_spoon		*right_spoon;
+// 	pthread_t	thread_id; // a philo is a thread
+// 	t_sim		*sim;
+// }				t_philo;
+
+void	spoons_init(t_sim *sim)
+{
+	int	i;
+
+	i = -1;
+	sim->spoons = safe_malloc(sizeof(t_spoon) * sim->philo_nbr);
+	while (++i < sim->philo_nbr)
+	{
+		safe_mutex_handle(&sim->spoons[i].spoon, INIT);
+		sim->spoons[i].spoon_id = i;
+	}
+}
+
 void	sim_init(t_sim *sim)
 {
-	sim = malloc(sizeof(t_sim));
-	if (sim == NULL)
-	{
-		error_exit("Memory allocation failed");
-		return ;
-	}
+	sim = safe_malloc(sizeof(t_sim));
 	sim->philo_nbr = -1;
 	sim->time_to_die = -1;
 	sim->time_to_eat = -1;
 	sim->time_to_sleep = -1;
 	sim->nbr_limit_meals = -1;
 	sim->end_sim = false;
-	// INIT spoons
-	// INIT philos
 }
