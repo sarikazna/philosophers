@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 19:39:28 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/14 20:53:48 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
 	philo_nbr = philo->sim->philo_nbr;
 	philo->second_spoon = &spoons[philo_position];
 	philo->first_spoon = &spoons[(philo_position + 1) % philo_nbr];
-	if (philo->philo_id % 2 == 0) // even philo
+	if (philo->philo_id % 2 == 0)
 	{
 		philo->first_spoon = &spoons[philo_position];
 		philo->second_spoon = &spoons[(philo_position + 1) % philo_nbr];
@@ -29,9 +29,9 @@ static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
 
 void	philos_init(t_sim *sim)
 {
-	int			i;
+	int		i;
 	t_philo	*philo;
-	
+
 	sim->philos = safe_malloc(sizeof(t_philo) * sim->philo_nbr);
 	i = -1;
 	while (++i < sim->philo_nbr)

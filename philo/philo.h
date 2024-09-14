@@ -6,22 +6,22 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 19:34:43 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/14 20:51:03 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h> // for usleep
-#include <stdbool.h>
-#include <pthread.h> //mutex: init destroy lock unlock
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h> // for usleep
+# include <stdbool.h>
+# include <pthread.h> //mutex: init destroy lock unlock
 					// threads: create join detach
-#include <sys/time.h> // gettimeofday
-#include <limits.h> // INT_MAX, INT_MIN
-#include <errno.h>
+# include <sys/time.h> // gettimeofday
+# include <limits.h> // INT_MAX, INT_MIN
+# include <errno.h>
 
 /* DEFINITIONS */
 
@@ -30,7 +30,7 @@
 # define RED	"\033[1;31m"
 
 // Enum
-typedef enum	e_opcode
+typedef enum e_opcode
 {
 	LOCK,
 	UNLOCK,
@@ -42,12 +42,12 @@ typedef enum	e_opcode
 }				t_opcode;
 
 // Short version of data type
-typedef	pthread_mutex_t	t_mtx;
+typedef pthread_mutex_t	t_mtx;
 
 /* STRUCTURES */
 
 // Name of struct for the recursive action
-typedef	struct s_sim	t_sim;
+typedef struct s_sim	t_sim;
 
 typedef struct s_spoon
 {
@@ -84,12 +84,14 @@ struct s_sim
 
 void	error_exit(const char *error);
 void	*safe_malloc(size_t bytes);
-void	safe_thread_handle(pthread_t *thread, void *(foo)(void *), void *data, t_opcode opcode);
+void	safe_thread_handle(pthread_t *thread, void *(foo)(void *),
+			void *data, t_opcode opcode);
 void	safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
 long	ft_atol(const char *nptr);
 void	check_input(int ac, char **av);
 void	parse_input(t_sim *sim, char **av);
 void	sim_init(t_sim *sim);
+void	philos_init(t_sim *sim);
+void	spoons_init(t_sim *sim);
 
 #endif
-

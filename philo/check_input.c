@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 15:49:23 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 16:49:09 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/14 20:52:08 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	is_valid_number(char *str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		while ((str[i] >= '\t' && str[i] <= '\r') || str[i] == ' ')
 			i++;
@@ -51,14 +51,14 @@ int	is_valid_number(char *str)
 		if (str[i] >= '0' && str[i] <= '9')
 		{
 			if (ft_atol(str) <= INT_MAX)
-				return(1);
+				return (1);
 			else
-				return(0);
+				return (0);
 		}
 		else
-			return(0);
+			return (0);
 	}
-	return(0);
+	return (0);
 }
 
 /* Checks that arguments exist, i.e., makes sure there are 
@@ -66,7 +66,7 @@ no null arguments or non numerical arguments. */
 void	check_input(int ac, char **av)
 {
 	int	i;
-	
+
 	i = ac - 1;
 	while (i > 0)
 	{
