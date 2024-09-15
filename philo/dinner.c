@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 15:48:02 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 17:02:26 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,25 @@ void	*dinner_simulation(void *data)
 	philo = (t_philo *)data;
 	//spinlock
 	wait_all_threads(philo->sim); // All the philosophers will wait for the threads to be ready
+	
+	// set last meal time
+
+	while (!sim_finished(philo->sim)) // till end of simulation
+	{
+		// 1) am I full?
+		if (philo->is_satiated) // TO DO thread safe?
+			break ;
+		
+		// 2) eat
+		eat(philo);
+
+		// 3) sleep, write_status & pricise usleep
+		
+		
+		// 4) think
+		thinking(philo); //TO DO
+	}
+	
 	return (NULL);
 }
 
@@ -50,7 +69,14 @@ void	dinner_start(t_sim *sim)
 				&sim->philos[i], CREATE);
 	}
 	// start of simulation
+	sim->start_sim == gettime(MILLISECOND);
 	
 	// now all threads are ready!
 	set_bool(&sim->table_mutex, &sim->all_threads_ready, true);
+
+	// wait for everyone
+	i = -1;
+	while (++i < sim->philo_nbr)
+		safe_thread_handle(&sim->philos[i].thread_id, NULL, NULL, JOIN);
+	// If we manage to reach this line, all philosophers are full.
 }

@@ -6,14 +6,13 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 20:12:07 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 16:18:13 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 17:10:25 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/* Get time of day
-time_code -> SECONDS MICROSECONS */
+/* Get time of day time_code -> SECONDS MILISECONDS MICROSECONS */
 long	gettime(t_time_code time_code)
 {
 	struct timeval	tv;
@@ -28,6 +27,35 @@ long	gettime(t_time_code time_code)
 		return((tv.tv_sec * 1e6) + tv.tv_usec);
 	else
 		error_exit("Wrong input to gettime");
+	return (-1);
+}
+
+/* Precise usleep function. usleep() itself is not precise enough. */
+void	precise_usleep(long usec, t_sim *sim)
+{
+	long	start;
+	long	elapsed;
+	long	remaining;
+
+	start = gettime(MICROSECOND);
+	while (gettime(MICROSECOND) - start < usec)
+	{
+		// 1)
+		if (sim_finished(sim))
+			break ;
+		elapsed = gettime(MICROSECOND) - start;
+		remaining = usec - elapsed;
+
+		// to get a spinklock threshod
+		if (remaining > 1e3)
+			usleep(remaining / 2);
+		else
+		{
+			// SPINLOCK
+			while(gettime(MICROSECOND) - start < usec)
+				;
+		}
+	}
 }
 
 // TO DO, check if anything needs to be freed and add the *sim into the function

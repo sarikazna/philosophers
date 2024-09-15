@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 15:16:46 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 17:13:35 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	spoons_init(t_sim *sim)
 void	sim_init2(t_sim *sim)
 {
 	safe_mutex_handle(&sim->table_mutex, INIT);
+	safe_mutex_handle(&sim->write_mutex, INIT);
 }
 
 void	sim_init(t_sim *sim)

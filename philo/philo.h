@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 16:11:51 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 18:05:29 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,22 @@
 
 // Enum for time code and mutex/threads code
 
+typedef enum e_philo_status
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	TAKE_FIRST_SPOON,
+	TAKE_SECOND_SPOON,
+	DIED,
+}			t_philo_status;
+
 typedef enum e_time_code
 {
 	SECOND,
 	MILLISECOND,
 	MICROSECOND,
 }			t_time_code;
-
 
 typedef enum e_opcode
 {
@@ -87,6 +96,7 @@ struct s_sim
 	bool	end_sim; //a philo dies or all philos full
 	bool	all_threads_ready;
 	t_mtx	table_mutex; // avoid races while reading from table
+	t_mtx	write_mutex;
 	t_spoon	*spoons; // array to spoons
 	t_philo	*philos;
 };
@@ -111,5 +121,7 @@ void	set_long(t_mtx *mutex, long *dest, long value);
 long	get_long(t_mtx *mutex, long *value);
 bool	sim_finished(t_sim *sim);
 void	wait_all_threads(t_sim *sim);
+long	gettime(t_time_code time_code);
+void	precise_usleep(long usec, t_sim *sim);
 
 #endif
