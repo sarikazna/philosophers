@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 18:05:29 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 19:02:52 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 // Colours
 # define RST	"\033[0m"
 # define RED	"\033[1;31m"
+
+// For the write function
+# define DEBUG_MODE	0
 
 // Enum for time code and mutex/threads code
 
@@ -82,6 +85,7 @@ typedef struct s_philo
 	t_spoon		*first_spoon;
 	t_spoon		*second_spoon;
 	pthread_t	thread_id; // a philo is a thread
+	t_mtx		philo_mutex; // useful for races wit hthe monitor
 	t_sim		*sim;
 }				t_philo;
 
@@ -123,5 +127,6 @@ bool	sim_finished(t_sim *sim);
 void	wait_all_threads(t_sim *sim);
 long	gettime(t_time_code time_code);
 void	precise_usleep(long usec, t_sim *sim);
+void	write_status(t_philo_status status, t_philo *philo, bool debug);
 
 #endif

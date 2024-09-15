@@ -6,16 +6,46 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 17:02:26 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 19:15:02 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 // argument should be like this: ./philo 5 1000 200 200 5
-// LEFT OFF at 57:00 https://www.youtube.com/watch?v=zOpzGHwJ3MU&t=1353s
+// LEFT OFF at 1:29 https://www.youtube.com/watch?v=zOpzGHwJ3MU&t=1353s
 
-void	*dinner_simulation(void *data)
+// TO DO
+static void	thinking(t_philo *philo)
+{
+	write_status(THINKING, philo, DEBUG_MODE);
+}
+
+
+static void	eat(t_philo *philo)
+{
+	// Grabbing the forks
+	safe_mutex_handle(&philo->first_spoon->spoon, LOCK);
+	write_status(TAKE_FIRST_SPOON, philo, DEBUG_MODE);
+	safe_mutex_handle(&philo->second_spoon->spoon, LOCK);
+	write_status(TAKE_SECOND_SPOON, philo, DEBUG_MODE);
+
+	// Write eat
+	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
+	philo->meals_count++;
+	write_status(EATING, philo, DEBUG_MODE);
+	precise_usleep(philo->sim->time_to_eat, philo->sim);
+	if (philo->sim->nbr_limit_meals > 0
+		&& philo->meals_count == philo->sim->nbr_limit_meals)
+		set_bool(&philo->philo_mutex, &philo->is_satiated, true);
+	
+	// Unlocking the forks
+	safe_mutex_handle(&philo->first_spoon->spoon, UNLOCK);
+	safe_mutex_handle(&philo->second_spoon->spoon, UNLOCK);
+}
+
+
+void	*dinner_sim(void *data)
 {
 	t_philo	*philo;
 
@@ -35,7 +65,8 @@ void	*dinner_simulation(void *data)
 		eat(philo);
 
 		// 3) sleep, write_status & pricise usleep
-		
+		write_status(SLEEPING, philo, DEBUG_MODE);
+		precise_usleep(philo->sim->time_to_sleep, philo->sim);
 		
 		// 4) think
 		thinking(philo); //TO DO

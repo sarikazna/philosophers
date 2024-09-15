@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 17:13:35 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 19:03:43 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	philos_init(t_sim *sim)
 		philo->meals_count = 0;
 		philo->is_satiated = false;
 		philo->sim = sim;
+		safe_mutex_handle(&philo->philo_mutex, INIT);
 		assign_spoons(philo, sim->spoons, i);
 	}
 }
