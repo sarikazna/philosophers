@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 20:59:41 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 15:48:02 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,17 @@ void	*dinner_simulation(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	wait_all_threads(); // TO DO for synchronisation
+	//spinlock
+	wait_all_threads(philo->sim); // All the philosophers will wait for the threads to be ready
 	return (NULL);
 }
 
+/* Dinner starts if the number of meals is larger than 1.
+1. If we only have one philosopher, we only have one spoon so he won't
+be able to eat.
+2. Monitor thread checking if a philosopher is dead
+3. Synchromize the beginning of the symulation. 
+4. Join everyone. */
 void	dinner_start(t_sim *sim)
 {
 	int	i;
@@ -42,4 +49,8 @@ void	dinner_start(t_sim *sim)
 			safe_thread_handle(&sim->philos[i].thread_id, dinner_sim,
 				&sim->philos[i], CREATE);
 	}
+	// start of simulation
+	
+	// now all threads are ready!
+	set_bool(&sim->table_mutex, &sim->all_threads_ready, true);
 }

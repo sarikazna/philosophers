@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 20:53:48 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 15:16:46 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ void	spoons_init(t_sim *sim)
 	}
 }
 
+void	sim_init2(t_sim *sim)
+{
+	safe_mutex_handle(&sim->table_mutex, INIT);
+}
+
 void	sim_init(t_sim *sim)
 {
 	sim = safe_malloc(sizeof(t_sim));
@@ -79,4 +84,5 @@ void	sim_init(t_sim *sim)
 	sim->time_to_sleep = -1;
 	sim->nbr_limit_meals = -1;
 	sim->end_sim = false;
+	sim->all_threads_ready = false;
 }

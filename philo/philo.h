@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 20:51:03 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/15 16:11:51 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,16 @@
 # define RST	"\033[0m"
 # define RED	"\033[1;31m"
 
-// Enum
+// Enum for time code and mutex/threads code
+
+typedef enum e_time_code
+{
+	SECOND,
+	MILLISECOND,
+	MICROSECOND,
+}			t_time_code;
+
+
 typedef enum e_opcode
 {
 	LOCK,
@@ -76,6 +85,8 @@ struct s_sim
 	long	nbr_limit_meals;
 	long	start_sim;
 	bool	end_sim; //a philo dies or all philos full
+	bool	all_threads_ready;
+	t_mtx	table_mutex; // avoid races while reading from table
 	t_spoon	*spoons; // array to spoons
 	t_philo	*philos;
 };
@@ -91,7 +102,14 @@ long	ft_atol(const char *nptr);
 void	check_input(int ac, char **av);
 void	parse_input(t_sim *sim, char **av);
 void	sim_init(t_sim *sim);
+void	sim_init2(t_sim *sim);
 void	philos_init(t_sim *sim);
 void	spoons_init(t_sim *sim);
+void	set_bool(t_mtx *mutex, bool *dest, bool value);
+bool	get_bool(t_mtx *mutex, bool *value);
+void	set_long(t_mtx *mutex, long *dest, long value);
+long	get_long(t_mtx *mutex, long *value);
+bool	sim_finished(t_sim *sim);
+void	wait_all_threads(t_sim *sim);
 
 #endif
