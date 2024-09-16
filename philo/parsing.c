@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:22:25 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 15:15:32 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/16 16:26:01 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	parse_input(t_sim *sim, char **av)
 		error_exit("The timestamps should be 60ms or higher.");
 	if (av[5])
 		sim->nbr_limit_meals = ft_atol(av[5]);
-	sim_init_2(sim);
+	sim_init2(sim);
 	philos_init(sim);
 	spoons_init(sim);
 }

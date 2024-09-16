@@ -6,20 +6,23 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 19:15:02 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/16 18:40:00 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 // argument should be like this: ./philo 5 1000 200 200 5
-// LEFT OFF at 1:29 https://www.youtube.com/watch?v=zOpzGHwJ3MU&t=1353s
+
 
 // TO DO
 static void	thinking(t_philo *philo)
 {
 	write_status(THINKING, philo, DEBUG_MODE);
 }
+
+// If we only get a single philo
+// LEFT OFF at 1>47>34 https://www.youtube.com/watch?v=zOpzGHwJ3MU&t=1353s
 
 
 static void	eat(t_philo *philo)
@@ -52,6 +55,13 @@ void	*dinner_sim(void *data)
 	philo = (t_philo *)data;
 	//spinlock
 	wait_all_threads(philo->sim); // All the philosophers will wait for the threads to be ready
+	
+	// set time last meal
+	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
+	
+	// synchro with monitor
+	// increase a sim variable counter, with all threads running
+	increase_long(&philo->sim->table_mutex, &philo->sim->threads_running_nbr);
 	
 	// set last meal time
 
@@ -90,7 +100,7 @@ void	dinner_start(t_sim *sim)
 		return ;// back to main and clean
 	else if (sim->philo_nbr == 1)
 	{
-		// TO DO
+		safe_thread_handle(&sim->philos[0].thread_id, single_philo, sim->philos[0], CREATE);
 	}
 	else
 	{
@@ -99,8 +109,10 @@ void	dinner_start(t_sim *sim)
 			safe_thread_handle(&sim->philos[i].thread_id, dinner_sim,
 				&sim->philos[i], CREATE);
 	}
+	// monitor
+	safe_thread_handle(sim->monitor, monitor_dinner, sim, CREATE); // TO DO
 	// start of simulation
-	sim->start_sim == gettime(MILLISECOND);
+	sim->start_sim = gettime(MILLISECOND);
 	
 	// now all threads are ready!
 	set_bool(&sim->table_mutex, &sim->all_threads_ready, true);

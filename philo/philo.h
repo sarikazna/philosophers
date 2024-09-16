@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 19:02:52 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/16 17:37:46 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ struct s_sim
 	long	start_sim;
 	bool	end_sim; //a philo dies or all philos full
 	bool	all_threads_ready;
+	long	threads_running_nbr;
+	pthread_t	monitor; // searching for death
 	t_mtx	table_mutex; // avoid races while reading from table
 	t_mtx	write_mutex;
 	t_spoon	*spoons; // array to spoons
@@ -128,5 +130,8 @@ void	wait_all_threads(t_sim *sim);
 long	gettime(t_time_code time_code);
 void	precise_usleep(long usec, t_sim *sim);
 void	write_status(t_philo_status status, t_philo *philo, bool debug);
+void	dinner_start(t_sim *sim);
+bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
+void	increase_long(t_mtx *mutex, long *value);
 
 #endif

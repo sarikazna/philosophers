@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 19:09:20 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 20:54:34 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/16 16:25:06 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ int	main(int ac, char **av)
 	check_input(ac, av);
 	sim_init(&sim);
 	parse_input(&sim, av);
-	start_dinner(&sim);
+	dinner_start(&sim);
 	// clean_all(&sim); // philos full or 1 philo died
 }
