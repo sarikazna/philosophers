@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/17 21:10:13 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 22:04:36 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	sim_init2(t_sim *sim)
 
 void	sim_init(t_sim *sim)
 {
-	sim = safe_malloc(sizeof(t_sim));
+	// sim = safe_malloc(sizeof(t_sim));
 	sim->philo_nbr = -1;
 	sim->time_to_die = -1;
 	sim->time_to_eat = -1;
