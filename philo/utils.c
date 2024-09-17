@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 20:12:07 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/17 12:39:57 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 21:11:47 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	clean_all(t_sim *sim)
 	t_philo *philo;
 	int	i;
 
+	i = -1;
 	while(++i < sim->philo_nbr)
 	{
 		philo = sim->philos + i;

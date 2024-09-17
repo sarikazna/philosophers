@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/17 13:26:07 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 21:03:46 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	*dinner_sim(void *data)
 	increase_long(&philo->sim->table_mutex, &philo->sim->threads_running_nbr);
 	
 	// desychronizing philos
-	de_synchronize_philos(philo->sim);
+	de_synchronize_philos(philo);
 
 	while (!sim_finished(philo->sim)) // till end of simulation
 	{
@@ -120,7 +120,7 @@ void	dinner_start(t_sim *sim)
 {
 	int	i;
 
-	i = -i;
+	i = -1;
 	if (sim->nbr_limit_meals <= 0)
 		return ;// back to main and clean
 	else if (sim->philo_nbr == 1)

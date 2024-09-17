@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 17:11:07 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 18:53:16 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 13:31:18 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,11 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug)
 	long	elapsed;
 
 	elapsed = gettime(MILLISECOND) - philo->sim->start_sim;
-	if (philo->is_satiated) // do we have to create thread safe?
+	if (philo->is_satiated)
 		return ;
-	// locking and unlocking
 	safe_mutex_handle(&philo->sim->write_mutex, LOCK);
 	if (debug)
-		write_status_debug(status, philo, elapsed); // to do
+		write_status_debug(status, philo, elapsed);
 	else
 	{
 		if ((status == TAKE_FIRST_SPOON || status == TAKE_SECOND_SPOON)
