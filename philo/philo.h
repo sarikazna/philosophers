@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/16 17:37:46 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 13:25:00 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,10 @@ void	write_status(t_philo_status status, t_philo *philo, bool debug);
 void	dinner_start(t_sim *sim);
 bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
 void	increase_long(t_mtx *mutex, long *value);
+void	*single_philo(void *arg);
+void	*monitor_dinner(void *data);
+void	clean_all(t_sim *sim);
+void	de_synchronize_philos(t_philo *philo);
+void	thinking(t_philo *philo, bool pre_sim);
 
 #endif

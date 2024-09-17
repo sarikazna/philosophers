@@ -6,11 +6,26 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 15:40:19 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/16 17:37:18 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 13:25:31 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+/* Trying to make the system fair. */
+void	de_synchronize_philos(t_philo *philo)
+{
+	if (philo->sim->philo_nbr % 2 == 0)
+	{
+		if (philo->philo_id % 2 == 0)
+			precise_usleep(3e4, philo->sim);
+	}
+	else
+	{
+		if (philo->philo_id % 2)
+			thinking(philo, true);
+	}
+}
 
 /* Spinlock to synchronize philosophers start */
 void	wait_all_threads(t_sim *sim)

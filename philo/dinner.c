@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/16 18:40:00 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 13:26:07 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,40 @@
 
 // argument should be like this: ./philo 5 1000 200 200 5
 
-
-// TO DO
-static void	thinking(t_philo *philo)
+void	thinking(t_philo *philo, bool pre_sim)
 {
-	write_status(THINKING, philo, DEBUG_MODE);
+	long	t_eat;
+	long	t_sleep;
+	long	t_think;
+	
+	if(!pre_sim)
+		write_status(THINKING, philo, DEBUG_MODE);
+	if (philo->sim->philo_nbr % 2 == 0)
+		return ;
+	t_eat = philo->sim->time_to_eat;
+	t_sleep = philo->sim->time_to_sleep;
+	t_think = t_eat * 2 - t_sleep; // avialble time to think
+	if (t_think < 0)
+		t_think = 0;
+	precise_usleep(t_think * 0.31, philo->sim);
 }
 
 // If we only get a single philo
 // LEFT OFF at 1>47>34 https://www.youtube.com/watch?v=zOpzGHwJ3MU&t=1353s
 
+void	*single_philo(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	wait_all_threads(philo->sim);
+	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
+	increase_long(&philo->sim->table_mutex, &philo->sim->threads_running_nbr);
+	write_status(TAKE_FIRST_SPOON, philo, DEBUG_MODE);
+	while (!sim_finished(philo->sim))
+		usleep(200);
+	return(NULL);
+}
 
 static void	eat(t_philo *philo)
 {
@@ -63,7 +87,8 @@ void	*dinner_sim(void *data)
 	// increase a sim variable counter, with all threads running
 	increase_long(&philo->sim->table_mutex, &philo->sim->threads_running_nbr);
 	
-	// set last meal time
+	// desychronizing philos
+	de_synchronize_philos(philo->sim);
 
 	while (!sim_finished(philo->sim)) // till end of simulation
 	{
@@ -79,7 +104,7 @@ void	*dinner_sim(void *data)
 		precise_usleep(philo->sim->time_to_sleep, philo->sim);
 		
 		// 4) think
-		thinking(philo); //TO DO
+		thinking(philo, false); //TO DO
 	}
 	
 	return (NULL);
@@ -100,7 +125,7 @@ void	dinner_start(t_sim *sim)
 		return ;// back to main and clean
 	else if (sim->philo_nbr == 1)
 	{
-		safe_thread_handle(&sim->philos[0].thread_id, single_philo, sim->philos[0], CREATE);
+		safe_thread_handle(&sim->philos[0].thread_id, single_philo, &sim->philos[0], CREATE);
 	}
 	else
 	{
@@ -110,7 +135,7 @@ void	dinner_start(t_sim *sim)
 				&sim->philos[i], CREATE);
 	}
 	// monitor
-	safe_thread_handle(sim->monitor, monitor_dinner, sim, CREATE); // TO DO
+	safe_thread_handle(&sim->monitor, monitor_dinner, sim, CREATE); // TO DO
 	// start of simulation
 	sim->start_sim = gettime(MILLISECOND);
 	
@@ -122,4 +147,6 @@ void	dinner_start(t_sim *sim)
 	while (++i < sim->philo_nbr)
 		safe_thread_handle(&sim->philos[i].thread_id, NULL, NULL, JOIN);
 	// If we manage to reach this line, all philosophers are full.
+	set_bool(&sim->table_mutex, &sim->end_sim, true);
+	safe_thread_handle(&sim->monitor, NULL, NULL, JOIN);
 }

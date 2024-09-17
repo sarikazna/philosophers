@@ -6,11 +6,28 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 20:12:07 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/16 17:33:33 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 12:39:57 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+
+void	clean_all(t_sim *sim)
+{
+	t_philo *philo;
+	int	i;
+
+	while(++i < sim->philo_nbr)
+	{
+		philo = sim->philos + i;
+		safe_mutex_handle(&philo->philo_mutex, DESTROY);
+	}
+	safe_mutex_handle(&sim->write_mutex, DESTROY);
+	safe_mutex_handle(&sim->write_mutex, DESTROY);
+	free(sim->spoons);
+	free(sim->philos);
+}
 
 /* Get time of day time_code -> SECONDS MILISECONDS MICROSECONS */
 long	gettime(t_time_code time_code)

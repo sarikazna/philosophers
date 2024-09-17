@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 17:05:00 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/16 18:34:36 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/17 12:26:07 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static bool	philo_died(t_philo *philo)
 	if (get_bool(&philo->philo_mutex, &philo->is_satiated))
 		return (false);
 	elapsed = gettime(MILLISECOND) - get_long(&philo->philo_mutex, &philo->last_meal_time);
-	t_to_die = philo->sim->time_to_die;
-	if (elapsed > t_to_die) // t_to_die has to be converted back to milliseconds! TO DO
+	t_to_die = philo->sim->time_to_die / 1e3;
+	if (elapsed > t_to_die)
 		return (true);
 	return (false);
 }
