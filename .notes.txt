@@ -1,0 +1,3 @@
+0. Seg fault
+1. Delete the DEBUG MODE
+2. Norminette
