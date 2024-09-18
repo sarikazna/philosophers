@@ -6,26 +6,11 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 14:30:37 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:51:45 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-/* Even and odd spoon assignment */
-// static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
-// {
-// 	int	philo_nbr;
-
-// 	philo_nbr = philo->sim->philo_nbr;
-// 	philo->first_spoon = &spoons[(philo_position + 1) % philo_nbr];
-// 	philo->second_spoon = &spoons[philo_position];
-// 	if (philo->philo_id % 2 == 0)
-// 	{
-// 		philo->first_spoon = &spoons[philo_position];
-// 		philo->second_spoon = &spoons[(philo_position + 1) % philo_nbr];
-// 	}
-// }
 
 static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
 {
@@ -34,9 +19,9 @@ static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
 	philo_nbr = philo->sim->philo_nbr;
 	philo->first_spoon = &spoons[philo_position];
 	philo->second_spoon = &spoons[(philo_position + 1) % philo_nbr];
-
 	// Ensure the fork order is consistent and avoids deadlock
-	if (philo->philo_id % 2 == 0) {
+	if (philo->philo_id % 2 == 0)
+	{
 		philo->first_spoon = &spoons[(philo_position + 1) % philo_nbr];
 		philo->second_spoon = &spoons[philo_position];
 	}

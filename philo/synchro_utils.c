@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 15:40:19 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/17 13:25:31 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:27:01 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,21 @@ void	de_synchronize_philos(t_philo *philo)
 /* Spinlock to synchronize philosophers start */
 void	wait_all_threads(t_sim *sim)
 {
-	while(!get_bool(&sim->table_mutex, &sim->all_threads_ready))
-	;
+	while (!get_bool(&sim->table_mutex, &sim->all_threads_ready))
+		;
 }
-
 
 /* Monitor busy waits until all threads are running*/
 bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr)
 {
 	bool	ret;
-	
+
 	ret = false;
 	safe_mutex_handle(mutex, LOCK);
 	if (*threads == philo_nbr)
 		ret = true;
 	safe_mutex_handle(mutex, UNLOCK);
-	return(ret);
+	return (ret);
 }
 
 /* Increase threads running to synchro with the monitor */

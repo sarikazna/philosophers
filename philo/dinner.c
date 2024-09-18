@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 14:42:26 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:14:45 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	thinking(t_philo *philo, bool pre_sim)
 	long	t_think;
 	
 	if(!pre_sim)
-		write_status(THINKING, philo, DEBUG_MODE);
+		write_status(THINKING, philo);
 	if (philo->sim->philo_nbr % 2 == 0)
 		return ;
 	t_eat = philo->sim->time_to_eat;
@@ -43,38 +43,24 @@ void	*single_philo(void *arg)
 	wait_all_threads(philo->sim);
 	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
 	increase_long(&philo->sim->table_mutex, &philo->sim->threads_running_nbr);
-	write_status(TAKE_FIRST_SPOON, philo, DEBUG_MODE);
+	write_status(TAKE_FIRST_SPOON, philo);
 	while (!sim_finished(philo->sim))
 		usleep(200);
 	return(NULL);
 }
-// void	*single_philo(void *arg)
-// {
-// 	t_philo	*philo;
-
-// 	philo = (t_philo *)arg;
-// 	wait_all_threads(philo->sim);
-// 	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
-// 	increase_long(&philo->sim->table_mutex, &philo->sim->threads_running_nbr);
-// 	write_status(TAKE_FIRST_SPOON, philo, DEBUG_MODE);
-// 	// Simulate waiting since single philosopher can't eat
-// 	precise_usleep(philo->sim->time_to_die, philo->sim); // waits till death
-// 	write_status(DIED, philo, DEBUG_MODE);
-// 	return(NULL);
-// }
 
 static void	eat(t_philo *philo)
 {
 	// Grabbing the forks
 	safe_mutex_handle(&philo->first_spoon->spoon, LOCK);
-	write_status(TAKE_FIRST_SPOON, philo, DEBUG_MODE);
+	write_status(TAKE_FIRST_SPOON, philo);
 	safe_mutex_handle(&philo->second_spoon->spoon, LOCK);
-	write_status(TAKE_SECOND_SPOON, philo, DEBUG_MODE);
+	write_status(TAKE_SECOND_SPOON, philo);
 
 	// Write eat
 	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
 	philo->meals_count++;
-	write_status(EATING, philo, DEBUG_MODE);
+	write_status(EATING, philo);
 	precise_usleep(philo->sim->time_to_eat, philo->sim);
 	if (philo->sim->nbr_limit_meals > 0
 		&& philo->meals_count == philo->sim->nbr_limit_meals)
@@ -114,7 +100,7 @@ void	*dinner_sim(void *data)
 		eat(philo);
 
 		// 3) sleep, write_status & pricise usleep
-		write_status(SLEEPING, philo, DEBUG_MODE);
+		write_status(SLEEPING, philo);
 		precise_usleep(philo->sim->time_to_sleep, philo->sim);
 		
 		// 4) think

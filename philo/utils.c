@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 20:12:07 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 13:54:33 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:23:46 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	clean_all(t_sim *sim)
 {
-	t_philo *philo;
-	int	i;
+	t_philo	*philo;
+	int		i;
 
 	i = -1;
-	while(++i < sim->philo_nbr)
+	while (++i < sim->philo_nbr)
 	{
 		philo = sim->philos + i;
 		safe_mutex_handle(&philo->philo_mutex, DESTROY);
@@ -33,15 +33,15 @@ void	clean_all(t_sim *sim)
 long	gettime(t_time_code time_code)
 {
 	struct timeval	tv;
-	
+
 	if (gettimeofday(&tv, NULL))
 		error_exit("Get time of day failed.");
 	if (time_code == SECOND)
-		return(tv.tv_sec + (tv.tv_usec / 1e6));
+		return (tv.tv_sec + (tv.tv_usec / 1e6));
 	else if (time_code == MILLISECOND)
-		return((tv.tv_sec * 1e3) + (tv.tv_usec / 1e3));
+		return ((tv.tv_sec * 1e3) + (tv.tv_usec / 1e3));
 	else if (time_code == MICROSECOND)
-		return((tv.tv_sec * 1e6) + tv.tv_usec);
+		return ((tv.tv_sec * 1e6) + tv.tv_usec);
 	else
 		error_exit("Wrong input to gettime");
 	return (-1);
@@ -62,14 +62,13 @@ void	precise_usleep(long usec, t_sim *sim)
 			break ;
 		elapsed = gettime(MICROSECOND) - start;
 		remaining = usec - elapsed;
-
 		// to get a spinklock threshod
 		if (remaining > 1e3)
 			usleep(remaining / 2);
 		else
 		{
 			// SPINLOCK
-			while(gettime(MICROSECOND) - start < usec)
+			while (gettime(MICROSECOND) - start < usec)
 				;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 15:19:08 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/15 15:33:56 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:52:25 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_bool(t_mtx *mutex, bool *dest, bool value)
 bool	get_bool(t_mtx *mutex, bool *value)
 {
 	bool	ret;
-	
+
 	safe_mutex_handle(mutex, LOCK);
 	// READING thread save
 	ret = *value;
@@ -45,7 +45,7 @@ void	set_long(t_mtx *mutex, long *dest, long value)
 long	get_long(t_mtx *mutex, long *value)
 {
 	long	ret;
-	
+
 	safe_mutex_handle(mutex, LOCK);
 	ret = *value;
 	safe_mutex_handle(mutex, UNLOCK);
@@ -56,5 +56,5 @@ long	get_long(t_mtx *mutex, long *value)
 cleaner/ more readable.*/
 bool	sim_finished(t_sim *sim)
 {
-	return(get_bool(&sim->table_mutex, &sim->end_sim));
+	return (get_bool(&sim->table_mutex, &sim->end_sim));
 }

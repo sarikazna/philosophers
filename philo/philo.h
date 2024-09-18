@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 14:42:34 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:35:47 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@
 // Colours
 # define RST	"\033[0m"
 # define RED	"\033[1;31m"
-
-// For the write function
-# define DEBUG_MODE	0
 
 // Enum for time code and mutex/threads code
 
@@ -91,20 +88,20 @@ typedef struct s_philo
 
 struct s_sim
 {
-	long	philo_nbr;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	long	nbr_limit_meals;
-	long	start_sim;
-	bool	end_sim; //a philo dies or all philos full
-	bool	all_threads_ready;
-	long	threads_running_nbr;
+	long		philo_nbr;
+	long		time_to_die;
+	long		time_to_eat;
+	long		time_to_sleep;
+	long		nbr_limit_meals;
+	long		start_sim;
+	bool		end_sim; //a philo dies or all philos full
+	bool		all_threads_ready;
+	long		threads_running_nbr;
 	pthread_t	monitor; // searching for death
-	t_mtx	table_mutex; // avoid races while reading from table
-	t_mtx	write_mutex;
-	t_spoon	*spoons; // array to spoons
-	t_philo	*philos;
+	t_mtx		table_mutex; // avoid races while reading from table
+	t_mtx		write_mutex;
+	t_spoon		*spoons; // array to spoons
+	t_philo		*philos;
 };
 
 /* FUNCTION PROTOTYPES */
@@ -129,7 +126,7 @@ bool	sim_finished(t_sim *sim);
 void	wait_all_threads(t_sim *sim);
 long	gettime(t_time_code time_code);
 void	precise_usleep(long usec, t_sim *sim);
-void	write_status(t_philo_status status, t_philo *philo, bool debug);
+void	write_status(t_philo_status status, t_philo *philo);
 void	dinner_start(t_sim *sim);
 bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr);
 void	increase_long(t_mtx *mutex, long *value);
