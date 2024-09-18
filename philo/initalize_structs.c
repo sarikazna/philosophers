@@ -6,24 +6,39 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/17 22:04:36 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 14:30:37 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /* Even and odd spoon assignment */
+// static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
+// {
+// 	int	philo_nbr;
+
+// 	philo_nbr = philo->sim->philo_nbr;
+// 	philo->first_spoon = &spoons[(philo_position + 1) % philo_nbr];
+// 	philo->second_spoon = &spoons[philo_position];
+// 	if (philo->philo_id % 2 == 0)
+// 	{
+// 		philo->first_spoon = &spoons[philo_position];
+// 		philo->second_spoon = &spoons[(philo_position + 1) % philo_nbr];
+// 	}
+// }
+
 static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
 {
 	int	philo_nbr;
 
 	philo_nbr = philo->sim->philo_nbr;
-	philo->second_spoon = &spoons[philo_position];
-	philo->first_spoon = &spoons[(philo_position + 1) % philo_nbr];
-	if (philo->philo_id % 2 == 0 == 0)
-	{
-		philo->first_spoon = &spoons[philo_position];
-		philo->second_spoon = &spoons[(philo_position + 1) % philo_nbr];
+	philo->first_spoon = &spoons[philo_position];
+	philo->second_spoon = &spoons[(philo_position + 1) % philo_nbr];
+
+	// Ensure the fork order is consistent and avoids deadlock
+	if (philo->philo_id % 2 == 0) {
+		philo->first_spoon = &spoons[(philo_position + 1) % philo_nbr];
+		philo->second_spoon = &spoons[philo_position];
 	}
 }
 
@@ -41,6 +56,7 @@ void	philos_init(t_sim *sim)
 		philo->meals_count = 0;
 		philo->is_satiated = false;
 		philo->sim = sim;
+		philo->last_meal_time = gettime(MILLISECOND);
 		safe_mutex_handle(&philo->philo_mutex, INIT);
 		assign_spoons(philo, sim->spoons, i);
 	}

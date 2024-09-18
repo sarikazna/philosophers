@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:22:25 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/16 16:26:01 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 12:51:05 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ void	parse_input(t_sim *sim, char **av)
 	if (av[5])
 		sim->nbr_limit_meals = ft_atol(av[5]);
 	sim_init2(sim);
-	philos_init(sim);
 	spoons_init(sim);
+	philos_init(sim);
 }

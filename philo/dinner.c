@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/17 21:56:10 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 14:42:26 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,20 @@ void	*single_philo(void *arg)
 		usleep(200);
 	return(NULL);
 }
+// void	*single_philo(void *arg)
+// {
+// 	t_philo	*philo;
+
+// 	philo = (t_philo *)arg;
+// 	wait_all_threads(philo->sim);
+// 	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
+// 	increase_long(&philo->sim->table_mutex, &philo->sim->threads_running_nbr);
+// 	write_status(TAKE_FIRST_SPOON, philo, DEBUG_MODE);
+// 	// Simulate waiting since single philosopher can't eat
+// 	precise_usleep(philo->sim->time_to_die, philo->sim); // waits till death
+// 	write_status(DIED, philo, DEBUG_MODE);
+// 	return(NULL);
+// }
 
 static void	eat(t_philo *philo)
 {
@@ -106,7 +120,7 @@ void	*dinner_sim(void *data)
 		// 4) think
 		thinking(philo, false); //TO DO
 	}
-	
+
 	return (NULL);
 }
 

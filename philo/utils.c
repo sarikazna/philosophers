@@ -6,12 +6,11 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 20:12:07 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/17 21:11:47 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 13:54:33 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 void	clean_all(t_sim *sim)
 {
