@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 21:28:21 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 23:27:51 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,7 @@ static void	eat(t_philo *philo)
 	precise_usleep(philo->sim->time_to_eat, philo->sim);
 	if (philo->sim->nbr_limit_meals > 0
 		&& philo->meals_count == philo->sim->nbr_limit_meals)
-	{
 		set_bool(&philo->philo_mutex, &philo->is_satiated, true);
-		safe_mutex_handle(&philo->sim->table_mutex, LOCK);
-        philo->sim->n_full_philos++;
-        safe_mutex_handle(&philo->sim->table_mutex, UNLOCK);
-	}
 	safe_mutex_handle(&philo->first_spoon->spoon, UNLOCK);
 	safe_mutex_handle(&philo->second_spoon->spoon, UNLOCK);
 }
@@ -77,10 +72,19 @@ void	*dinner_sim(void *data)
 	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime(MILLISECOND));
 	increase_long(&philo->sim->table_mutex, &philo->sim->threads_running_nbr);
 	de_synchronize_philos(philo);
+	// while (!sim_finished(philo->sim))
+	// {
+	// 	if (philo->is_satiated)
+	// 		break ;
+	// 	eat(philo);
+	// 	write_status(SLEEPING, philo);
+	// 	precise_usleep(philo->sim->time_to_sleep, philo->sim);
+	// 	thinking(philo, false);
+	// }
 	while (!sim_finished(philo->sim))
 	{
-		if (philo->is_satiated)
-			break ;
+		if (get_bool(&philo->philo_mutex, &philo->is_satiated))
+			break;
 		eat(philo);
 		write_status(SLEEPING, philo);
 		precise_usleep(philo->sim->time_to_sleep, philo->sim);
@@ -119,6 +123,6 @@ void	dinner_start(t_sim *sim)
 	i = -1;
 	while (++i < sim->philo_nbr)
 		safe_thread_handle(&sim->philos[i].thread_id, NULL, NULL, JOIN);
-	set_bool(&sim->table_mutex, &sim->end_sim, true);
 	safe_thread_handle(&sim->monitor, NULL, NULL, JOIN);
+	set_bool(&sim->table_mutex, &sim->end_sim, true);
 }
