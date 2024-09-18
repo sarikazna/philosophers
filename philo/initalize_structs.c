@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 20:58:21 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:14:00 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	sim_init(t_sim *sim)
 	sim->time_to_sleep = -1;
 	sim->nbr_limit_meals = -1;
 	sim->threads_running_nbr = 0;
+	sim->n_full_philos = 0;
 	sim->end_sim = false;
 	sim->all_threads_ready = false;
 }

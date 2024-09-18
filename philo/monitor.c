@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 17:05:00 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 21:02:33 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:42:23 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ void	*monitor_dinner(void *data)
 				set_bool(&sim->table_mutex, &sim->end_sim, true);
 				write_status(DIED, sim->philos + 1);
 			}
-			// if (sim->satiated_count == sim->philo_nbr)
-			// {
-			// 	set_bool(&sim->table_mutex, &sim->end_sim, true);
-			// 	printf("All philosophers are satiated.\n");
-			// }
+		}
+		if (sim->nbr_limit_meals > 0 && sim->n_full_philos == sim->philo_nbr)
+		{
+			set_bool(&sim->table_mutex, &sim->end_sim, true);
+			return (NULL);
 		}
 	}
 	return (NULL);

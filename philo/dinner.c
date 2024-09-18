@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 19:45:37 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 20:58:03 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:28:21 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,12 @@ static void	eat(t_philo *philo)
 	precise_usleep(philo->sim->time_to_eat, philo->sim);
 	if (philo->sim->nbr_limit_meals > 0
 		&& philo->meals_count == philo->sim->nbr_limit_meals)
+	{
 		set_bool(&philo->philo_mutex, &philo->is_satiated, true);
+		safe_mutex_handle(&philo->sim->table_mutex, LOCK);
+        philo->sim->n_full_philos++;
+        safe_mutex_handle(&philo->sim->table_mutex, UNLOCK);
+	}
 	safe_mutex_handle(&philo->first_spoon->spoon, UNLOCK);
 	safe_mutex_handle(&philo->second_spoon->spoon, UNLOCK);
 }
