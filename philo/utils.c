@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 20:12:07 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 15:23:46 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:01:07 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,19 @@ void	precise_usleep(long usec, t_sim *sim)
 	start = gettime(MICROSECOND);
 	while (gettime(MICROSECOND) - start < usec)
 	{
-		// 1)
 		if (sim_finished(sim))
 			break ;
 		elapsed = gettime(MICROSECOND) - start;
 		remaining = usec - elapsed;
-		// to get a spinklock threshod
 		if (remaining > 1e3)
 			usleep(remaining / 2);
 		else
 		{
-			// SPINLOCK
 			while (gettime(MICROSECOND) - start < usec)
 				;
 		}
 	}
 }
-
-// TO DO, check if anything needs to be freed and add the *sim into the function
 
 /* Writes the error and exits the program. */
 void	error_exit(const char *error)

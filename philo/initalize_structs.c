@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 21:25:05 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 15:51:45 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 20:58:21 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	assign_spoons(t_philo *philo, t_spoon *spoons, int philo_position)
 	philo_nbr = philo->sim->philo_nbr;
 	philo->first_spoon = &spoons[philo_position];
 	philo->second_spoon = &spoons[(philo_position + 1) % philo_nbr];
-	// Ensure the fork order is consistent and avoids deadlock
 	if (philo->philo_id % 2 == 0)
 	{
 		philo->first_spoon = &spoons[(philo_position + 1) % philo_nbr];
@@ -68,7 +67,6 @@ void	sim_init2(t_sim *sim)
 
 void	sim_init(t_sim *sim)
 {
-	// sim = safe_malloc(sizeof(t_sim));
 	sim->philo_nbr = -1;
 	sim->time_to_die = -1;
 	sim->time_to_eat = -1;

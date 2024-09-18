@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:40:16 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 15:35:47 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:06:36 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h> // for usleep
+# include <unistd.h>
 # include <stdbool.h>
-# include <pthread.h> //mutex: init destroy lock unlock
-					// threads: create join detach
-# include <sys/time.h> // gettimeofday
-# include <limits.h> // INT_MAX, INT_MIN
+# include <pthread.h>
+# include <sys/time.h>
+# include <limits.h>
 # include <errno.h>
 
 /* DEFINITIONS */
@@ -78,11 +77,11 @@ typedef struct s_philo
 	int			philo_id;
 	long		meals_count;
 	bool		is_satiated;
-	long		last_meal_time; //time passed from last meal
+	long		last_meal_time;
 	t_spoon		*first_spoon;
 	t_spoon		*second_spoon;
-	pthread_t	thread_id; // a philo is a thread
-	t_mtx		philo_mutex; // useful for races wit hthe monitor
+	pthread_t	thread_id;
+	t_mtx		philo_mutex;
 	t_sim		*sim;
 }				t_philo;
 
@@ -94,13 +93,14 @@ struct s_sim
 	long		time_to_sleep;
 	long		nbr_limit_meals;
 	long		start_sim;
-	bool		end_sim; //a philo dies or all philos full
+	bool		end_sim;
 	bool		all_threads_ready;
 	long		threads_running_nbr;
-	pthread_t	monitor; // searching for death
-	t_mtx		table_mutex; // avoid races while reading from table
+	long		n_full_philos;
+	pthread_t	monitor;
+	t_mtx		table_mutex;
 	t_mtx		write_mutex;
-	t_spoon		*spoons; // array to spoons
+	t_spoon		*spoons;
 	t_philo		*philos;
 };
 

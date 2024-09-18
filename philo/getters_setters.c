@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 15:19:08 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/18 15:52:25 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 20:58:11 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ bool	get_bool(t_mtx *mutex, bool *value)
 	bool	ret;
 
 	safe_mutex_handle(mutex, LOCK);
-	// READING thread save
 	ret = *value;
 	safe_mutex_handle(mutex, UNLOCK);
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: srudman <srudman@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 16:57:25 by srudman           #+#    #+#             */
-/*   Updated: 2024/09/14 20:57:48 by srudman          ###   ########.fr       */
+/*   Updated: 2024/09/18 21:00:32 by srudman          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ void	*safe_malloc(size_t bytes)
 	return (return_ptr);
 }
 
-/* MUTEX SAFE wrapper functions*/
-// Explained in 38:10 https://www.youtube.com/watch?v=zOpzGHwJ3MU&t=1353s
-// Study all the functions below
-
-// TO DO: Check the Error codes with man. There have been a lot of changes
 /* Handling the error return values of mutex functions. */
 static void	handle_mutex_error(int status, t_opcode opcode)
 {
@@ -88,17 +83,16 @@ static void	handle_thread_error(int status, t_opcode opcode)
 		error_exit("No thread with the ID thread could be found.");
 }
 
-// WHAT IS POINTER TO DATA?
 // Wrapper of the treads function to make the code cleaner.
 void	safe_thread_handle(pthread_t *thread, void *(foo)(void *),
 	void *data, t_opcode opcode)
 {
 	if (opcode == CREATE)
-		handle_mutex_error(pthread_create(thread, NULL, foo, data), opcode);
+		handle_thread_error(pthread_create(thread, NULL, foo, data), opcode);
 	else if (opcode == JOIN)
-		handle_mutex_error(pthread_join(*thread, NULL), opcode);
+		handle_thread_error(pthread_join(*thread, NULL), opcode);
 	else if (opcode == DETACH)
-		handle_mutex_error(pthread_detach(*thread), opcode);
+		handle_thread_error(pthread_detach(*thread), opcode);
 	else
 		error_exit("Wrong opcode for thread_handle: use \
 			<CREATE> <JOIN> <HANDLE>");
